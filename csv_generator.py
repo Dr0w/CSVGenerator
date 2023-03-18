@@ -2,6 +2,11 @@ import csv
 import random
 import re
 
+# #generates US phone number, rules:
+# The area code cannot start with a zero,
+# None of the middle three digits can be a 9,
+# Middle three digits cannot be 000,
+# Last 4 digits cannot all be the same.
 def phn_gen():
     p=list('0000000000')
     p[0] = str(random.randint(1,9))
@@ -20,11 +25,14 @@ def phn_gen():
     p = ''.join(p)
     return p[:3] + '-' + p[3:6] + '-' + p[6:]
 
+
+#generates Name and Surname from dictionary
 def name_gen():
     first_names = ["Emma", "Olivia", "Ava", "Isabella", "Sophia", "Mia", "Charlotte", "Amelia", "Evelyn", "Abigail"]
     last_names = ["Smith", "Johnson", "Williams", "Brown", "Jones", "Miller", "Davis", "Garcia", "Rodriguez", "Martinez"]
     return random.choice(first_names), random.choice(last_names)
 
+#generates email address by concatenating name and surname to lowercase combining with dot and dictionary of domains
 def email_gen(name, surname):
     domains = ["gmail.com", "yahoo.com", "hotmail.com", "outlook.com", "websense.com", "qaexch2010.wbsn"]
     name = name.lower()
@@ -32,6 +40,7 @@ def email_gen(name, surname):
     domain = random.choice(domains)
     return f"{name}.{surname}@{domain}"
 
+#randomly generates CC numbers by regex patterns, vavailable vendors: Visa, MC, AMEX, Discovery
 def cc_gen():
     visa_pattern = "4[0-9]{12}(?:[0-9]{3})?$"
     mastercard_pattern = "5[1-5][0-9]{14}"
@@ -44,8 +53,10 @@ def cc_gen():
         if re.match(pattern, cc_num):
             return cc_num
 
+#CSV Column structure
 data = [["Name", "Surname", "Phone", "Email", "Credit Card Number"]]
 
+#Main generation part, range sets number of records
 for i in range(100):
     name, surname = name_gen()
     phone = phn_gen()
@@ -53,6 +64,7 @@ for i in range(100):
     cc_num = cc_gen()
     data.append([name, surname, phone, email, cc_num])
 
+#writes generated data into csv file at the same folder where script is located
 with open("customers.csv", "w", newline="") as file:
     writer = csv.writer(file)
     writer.writerows(data)
