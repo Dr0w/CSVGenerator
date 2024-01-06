@@ -39,14 +39,14 @@ def name_gen():
 
 # generates email address by concatenating name and surname to lowercase combining with dot and dictionary of domains
 def email_gen(name, surname):
-    domains = ["gmail.com", "yahoo.com", "hotmail.com", "outlook.com"]
+    domains = ["gmail.com", "yahoo.com", "hotmail.com", "outlook.com", "icloud.com"]
     name = name.lower()
     surname = surname.lower()
     domain = random.choice(domains)
     return f"{name}.{surname}@{domain}"
 
 
-# randomly generates CC numbers by regex patterns, vavailable vendors: Visa, MC, AMEX, Discovery
+# randomly generates CC numbers by regex patterns, available vendors: Visa, MC, AMEX, Discovery
 def cc_gen():
     visa_pattern = "4[0-9]{12}(?:[0-9]{3})?$"
     mastercard_pattern = "5[1-5][0-9]{14}"
@@ -64,7 +64,7 @@ def cc_gen():
 data = [["Name", "Surname", "Phone", "Email", "Credit Card Number"]]
 
 # Main generation part, range sets number of records
-for i in range(100):
+for i in range(1000):
     name, surname = name_gen()
     phone = phn_gen()
     email = email_gen(name, surname)
@@ -72,6 +72,8 @@ for i in range(100):
     data.append([name, surname, phone, email, cc_num])
 
 # writes generated data into csv file at the same folder where script is located
-with open("customers.csv", "w", newline="") as file:
+filename = f"customers_{len(data) - 1}.csv"
+
+with open(filename, "w", newline="") as file:
     writer = csv.writer(file)
     writer.writerows(data)
